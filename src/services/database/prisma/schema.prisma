@@ -20,8 +20,8 @@ model Users {
   avatar         String
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
-  UsersTokens    UsersTokens[]
 
+  UsersTokens    UsersTokens[]
   @@map("users")
 }
 
@@ -35,4 +35,32 @@ model UsersTokens {
   updatedAt      DateTime      @updatedAt @map("updated_at")
 
   @@map("users_tokens")
+}
+
+model Category {
+  id           String @id @default(uuid())
+  name String 
+  description String
+  crecreatedAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  Car Car[]
+  @@map("category")
+}
+
+model Car {
+  id           String @id @default(uuid())
+  name String
+  description String
+  dailyRate Int @map("daily_rate")
+  available Boolean
+  licensePlate String @map("license_plate")
+  fineAmount Decimal @map("fine_amount")
+  brand String
+  categoryId String @map("category_id")
+  category Category @relation(fields: [categoryId], references: [id])
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  @@map("car")
 }
