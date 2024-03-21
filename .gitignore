@@ -7,3 +7,5 @@ coverage
 dist
 ormconfig.json
 package-lock.json
+services
+.DS_Store
