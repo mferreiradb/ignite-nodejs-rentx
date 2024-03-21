@@ -1,0 +1,38 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "./generated/client"
+  binaryTargets = [env("PRISMA_DATABASE_BINARY_TARGETS")]
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_SHADOW_URL")
+}
+
+model Users {
+  id             String        @id @default(uuid())
+  name           String
+  email          String
+  password       String
+  driver_license String
+  isAdmin        Boolean
+  avatar         String
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  UsersTokens    UsersTokens[]
+
+  @@map("users")
+}
+
+model UsersTokens {
+  id           String @id @default(uuid())
+  refreshToken String @map("refresh_token")
+  userId       String @map("user_id")
+  users        Users  @relation(fields: [userId], references: [id])
+  expiresDate DateTime @map("expires_date")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  @@map("users_tokens")
+}
